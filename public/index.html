@@ -191,6 +191,11 @@
             box-shadow: 0 10px 30px rgba(236, 72, 153, 0.4);
         }
 
+        .notify-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -315,170 +320,259 @@
                 flex-direction: column;
             }
         }
+
+        /* Fallback for older browsers */
+        .logo, .countdown-number {
+            color: #ec4899;
+        }
+
+        .title {
+            color: white;
+        }
     </style>
 </head>
 <body>
-    <div class="stars"></div>
-    <div class="floating-elements"></div>
+    <div class="stars" role="presentation"></div>
+    <div class="floating-elements" role="presentation"></div>
     
     <div class="container">
         <div class="logo">CodewingX</div>
         
-        <div class="main-card">
+        <main class="main-card">
             <h1 class="title">Coming Soon</h1>
             <p class="subtitle">Revolutionary software solutions are on the horizon. Get ready to transform your business.</p>
             
-            <div class="countdown">
+            <div class="countdown" role="timer" aria-label="Launch countdown">
                 <div class="countdown-item">
-                    <span class="countdown-number" id="days">30</span>
+                    <span class="countdown-number" id="days" aria-label="days">30</span>
                     <span class="countdown-label">Days</span>
                 </div>
                 <div class="countdown-item">
-                    <span class="countdown-number" id="hours">12</span>
+                    <span class="countdown-number" id="hours" aria-label="hours">12</span>
                     <span class="countdown-label">Hours</span>
                 </div>
                 <div class="countdown-item">
-                    <span class="countdown-number" id="minutes">45</span>
+                    <span class="countdown-number" id="minutes" aria-label="minutes">45</span>
                     <span class="countdown-label">Minutes</span>
                 </div>
                 <div class="countdown-item">
-                    <span class="countdown-number" id="seconds">30</span>
+                    <span class="countdown-number" id="seconds" aria-label="seconds">30</span>
                     <span class="countdown-label">Seconds</span>
                 </div>
             </div>
             
-            <div class="email-form">
-                <input type="email" class="email-input" placeholder="Enter your email address" required>
-                <button class="notify-btn">Notify Me</button>
-            </div>
-        </div>
+            <form class="email-form" novalidate>
+                <input type="email" class="email-input" placeholder="Enter your email address" required aria-label="Email address">
+                <button type="submit" class="notify-btn">Notify Me</button>
+            </form>
+        </main>
         
-        <div class="features">
+        <section class="features">
             <div class="feature-card">
-                <div class="feature-icon">⚡</div>
+                <div class="feature-icon" role="img" aria-label="Lightning bolt">⚡</div>
                 <h3 class="feature-title">Lightning Fast</h3>
                 <p class="feature-desc">Experience unprecedented speed and performance with our cutting-edge technology stack.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🔒</div>
+                <div class="feature-icon" role="img" aria-label="Security lock">🔒</div>
                 <h3 class="feature-title">Ultra Secure</h3>
                 <p class="feature-desc">Enterprise-grade security features to protect your data and ensure complete privacy.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🌐</div>
+                <div class="feature-icon" role="img" aria-label="Global network">🌐</div>
                 <h3 class="feature-title">Cloud Native</h3>
                 <p class="feature-desc">Built for the cloud with seamless scalability and global accessibility in mind.</p>
             </div>
-        </div>
+        </section>
         
-        <div class="social-links">
-            <a href="#" class="social-link">📧</a>
-            <a href="#" class="social-link">🐦</a>
-            <a href="#" class="social-link">💼</a>
-            <a href="#" class="social-link">📱</a>
-        </div>
+        <nav class="social-links" aria-label="Social media links">
+            <a href="mailto:contact@codewingx.com" class="social-link" aria-label="Email us">📧</a>
+            <a href="#" class="social-link" aria-label="Twitter">🐦</a>
+            <a href="#" class="social-link" aria-label="LinkedIn">💼</a>
+            <a href="#" class="social-link" aria-label="Mobile app">📱</a>
+        </nav>
     </div>
 
     <script>
-        // Create animated stars
-        function createStars() {
-            const starsContainer = document.querySelector('.stars');
-            const numStars = 100;
-            
-            for (let i = 0; i < numStars; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.width = Math.random() * 3 + 1 + 'px';
-                star.style.height = star.style.width;
-                star.style.animationDelay = Math.random() * 4 + 's';
-                starsContainer.appendChild(star);
-            }
-        }
+        (function() {
+            'use strict';
 
-        // Create floating circles
-        function createFloatingElements() {
-            const container = document.querySelector('.floating-elements');
-            const numCircles = 5;
-            
-            for (let i = 0; i < numCircles; i++) {
-                const circle = document.createElement('div');
-                circle.className = 'floating-circle';
-                circle.style.left = Math.random() * 100 + '%';
-                circle.style.width = Math.random() * 100 + 50 + 'px';
-                circle.style.height = circle.style.width;
-                circle.style.animationDelay = Math.random() * 20 + 's';
-                circle.style.animationDuration = (Math.random() * 10 + 15) + 's';
-                container.appendChild(circle);
-            }
-        }
-
-        // Countdown timer
-        function updateCountdown() {
-            const targetDate = new Date();
-            targetDate.setDate(targetDate.getDate() + 35); // 30 days from now
-            
-            function update() {
-                const now = new Date().getTime();
-                const distance = targetDate - now;
-                
-                if (distance > 0) {
-                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            // Create animated stars
+            function createStars() {
+                try {
+                    const starsContainer = document.querySelector('.stars');
+                    if (!starsContainer) return;
                     
-                    document.getElementById('days').textContent = days.toString().padStart(2, '0');
-                    document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-                    document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-                    document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+                    const numStars = Math.min(100, Math.floor(window.innerWidth / 10));
+                    
+                    for (let i = 0; i < numStars; i++) {
+                        const star = document.createElement('div');
+                        star.className = 'star';
+                        star.style.left = Math.random() * 100 + '%';
+                        star.style.top = Math.random() * 100 + '%';
+                        star.style.width = Math.random() * 3 + 1 + 'px';
+                        star.style.height = star.style.width;
+                        star.style.animationDelay = Math.random() * 4 + 's';
+                        starsContainer.appendChild(star);
+                    }
+                } catch (error) {
+                    console.warn('Error creating stars:', error);
                 }
             }
-            
-            update();
-            setInterval(update, 1000);
-        }
 
-        // Email form submission
-        document.querySelector('.notify-btn').addEventListener('click', function() {
-            const emailInput = document.querySelector('.email-input');
-            const email = emailInput.value.trim();
-            
-            if (email && email.includes('@')) {
-                // Simulate successful subscription
-                this.textContent = 'Subscribed! ✨';
-                this.style.background = 'linear-gradient(90deg, #22c55e, #16a34a)';
-                emailInput.disabled = true;
-                emailInput.style.background = 'rgba(34, 197, 94, 0.2)';
-                emailInput.style.borderColor = '#22c55e';
-                
-                setTimeout(() => {
-                    this.textContent = 'Thank You!';
-                }, 2000);
-            } else {
-                // Show error state
-                emailInput.style.borderColor = '#ef4444';
-                emailInput.style.boxShadow = '0 0 20px rgba(239, 68, 68, 0.3)';
-                
-                setTimeout(() => {
-                    emailInput.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                    emailInput.style.boxShadow = 'none';
-                }, 2000);
+            // Create floating circles
+            function createFloatingElements() {
+                try {
+                    const container = document.querySelector('.floating-elements');
+                    if (!container) return;
+                    
+                    const numCircles = 5;
+                    
+                    for (let i = 0; i < numCircles; i++) {
+                        const circle = document.createElement('div');
+                        circle.className = 'floating-circle';
+                        circle.style.left = Math.random() * 100 + '%';
+                        circle.style.width = Math.random() * 100 + 50 + 'px';
+                        circle.style.height = circle.style.width;
+                        circle.style.animationDelay = Math.random() * 20 + 's';
+                        circle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                        container.appendChild(circle);
+                    }
+                } catch (error) {
+                    console.warn('Error creating floating elements:', error);
+                }
             }
-        });
 
-        // Enter key support for email input
-        document.querySelector('.email-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                document.querySelector('.notify-btn').click();
+            // Countdown timer
+            function updateCountdown() {
+                try {
+                    const daysEl = document.getElementById('days');
+                    const hoursEl = document.getElementById('hours');
+                    const minutesEl = document.getElementById('minutes');
+                    const secondsEl = document.getElementById('seconds');
+                    
+                    if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+
+                    const targetDate = new Date();
+                    targetDate.setDate(targetDate.getDate() + 35);
+                    
+                    let intervalId;
+
+                    function update() {
+                        try {
+                            const now = new Date().getTime();
+                            const distance = targetDate - now;
+                            
+                            if (distance > 0) {
+                                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                                
+                                daysEl.textContent = days.toString().padStart(2, '0');
+                                hoursEl.textContent = hours.toString().padStart(2, '0');
+                                minutesEl.textContent = minutes.toString().padStart(2, '0');
+                                secondsEl.textContent = seconds.toString().padStart(2, '0');
+                            } else {
+                                // Countdown finished
+                                daysEl.textContent = '00';
+                                hoursEl.textContent = '00';
+                                minutesEl.textContent = '00';
+                                secondsEl.textContent = '00';
+                                if (intervalId) {
+                                    clearInterval(intervalId);
+                                }
+                            }
+                        } catch (error) {
+                            console.warn('Error updating countdown:', error);
+                            if (intervalId) {
+                                clearInterval(intervalId);
+                            }
+                        }
+                    }
+                    
+                    update();
+                    intervalId = setInterval(update, 1000);
+                } catch (error) {
+                    console.warn('Error initializing countdown:', error);
+                }
             }
-        });
 
-        // Initialize
-        createStars();
-        createFloatingElements();
-        updateCountdown();
+            // Email form validation and submission
+            function setupEmailForm() {
+                try {
+                    const form = document.querySelector('.email-form');
+                    const emailInput = document.querySelector('.email-input');
+                    const notifyBtn = document.querySelector('.notify-btn');
+                    
+                    if (!form || !emailInput || !notifyBtn) return;
+
+                    function validateEmail(email) {
+                        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        return re.test(email);
+                    }
+
+                    function handleSubmit(e) {
+                        e.preventDefault();
+                        
+                        const email = emailInput.value.trim();
+                        
+                        if (!email) {
+                            showError('Please enter your email address');
+                            return;
+                        }
+                        
+                        if (!validateEmail(email)) {
+                            showError('Please enter a valid email address');
+                            return;
+                        }
+
+                        // Simulate successful subscription
+                        notifyBtn.textContent = 'Subscribed! ✨';
+                        notifyBtn.style.background = 'linear-gradient(90deg, #22c55e, #16a34a)';
+                        notifyBtn.disabled = true;
+                        emailInput.disabled = true;
+                        emailInput.style.background = 'rgba(34, 197, 94, 0.2)';
+                        emailInput.style.borderColor = '#22c55e';
+                        
+                        setTimeout(() => {
+                            notifyBtn.textContent = 'Thank You!';
+                        }, 2000);
+                    }
+
+                    function showError(message) {
+                        emailInput.style.borderColor = '#ef4444';
+                        emailInput.style.boxShadow = '0 0 20px rgba(239, 68, 68, 0.3)';
+                        emailInput.focus();
+                        
+                        // Reset error state after 3 seconds
+                        setTimeout(() => {
+                            emailInput.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                            emailInput.style.boxShadow = 'none';
+                        }, 3000);
+                    }
+
+                    form.addEventListener('submit', handleSubmit);
+                } catch (error) {
+                    console.warn('Error setting up email form:', error);
+                }
+            }
+
+            // Initialize when DOM is ready
+            function init() {
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', init);
+                    return;
+                }
+
+                createStars();
+                createFloatingElements();
+                updateCountdown();
+                setupEmailForm();
+            }
+
+            init();
+        })();
     </script>
 </body>
 </html>
